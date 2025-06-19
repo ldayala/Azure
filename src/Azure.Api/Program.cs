@@ -1,3 +1,4 @@
+using Azure.Api.Extensions;
 using Azure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddAzurePersistence(builder.Configuration);
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+// Apply migrations at startup
+await app.ApplyMigration(app.Environment);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
