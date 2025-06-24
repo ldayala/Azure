@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36109.1 d17.14
+VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Api", "src\Azure.Api\Azure.Api.csproj", "{21BE6E63-6268-48B4-812C-6DA8356649ED}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Application", "src\Azure.Application\Azure.Application.csproj", "{06EAE2BE-B829-4656-9F23-864DEC2A0213}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Persistence", "src\Azure.Persistence\Azure.Persistence.csproj", "{D747B179-412C-4B15-B8B2-0D2988559467}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.MediatorOR", "core\Core.MediatorOR\Core.MediatorOR.csproj", "{7BB3AC5E-9D09-35DD-90B5-59B1CAB7A01A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D747B179-412C-4B15-B8B2-0D2988559467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D747B179-412C-4B15-B8B2-0D2988559467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D747B179-412C-4B15-B8B2-0D2988559467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB3AC5E-9D09-35DD-90B5-59B1CAB7A01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB3AC5E-9D09-35DD-90B5-59B1CAB7A01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB3AC5E-9D09-35DD-90B5-59B1CAB7A01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB3AC5E-9D09-35DD-90B5-59B1CAB7A01A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

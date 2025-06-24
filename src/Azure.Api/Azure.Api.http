@@ -1,6 +1,6 @@
-@Azure.Api_HostAddress = http://localhost:5220
+@Azure.Api_HostAddress = http://localhost:5100
 
-GET {{Azure.Api_HostAddress}}/weatherforecast/
+GET {{Azure.Api_HostAddress}}/api/Category/
 Accept: application/json
 
 ###

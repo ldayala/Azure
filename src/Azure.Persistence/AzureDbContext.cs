@@ -46,7 +46,7 @@ namespace Azure.Persistence
 
         }
         // Define DbSet properties for your entities
-       public required DbSet<Category> Categories { get; set; }
+        public required DbSet<Category> Categories { get; set; }
         public required DbSet<Coffe> Coffes { get; set; }
         public required DbSet<Ingredient> Ingredients { get; set; }
 

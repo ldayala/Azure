@@ -4,12 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;Production</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Core.MediatorOR\Core.MediatorOR.csproj" />
-    <ProjectReference Include="..\Azure.Persistence\Azure.Persistence.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Scrutor" Version="6.1.0" />
   </ItemGroup>
 
 </Project>

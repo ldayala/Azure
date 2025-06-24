@@ -3,6 +3,7 @@ using Azure.Domain;
 using Azure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Azure.Api.Extensions
 {
@@ -24,7 +25,7 @@ namespace Azure.Api.Extensions
                     var context = service.GetRequiredService<AzureDbContext>();
                     await context.Database.MigrateAsync();
                     await SeedData(context, env);
-                                       
+
                 }
                 catch (Exception e)
                 {
@@ -36,26 +37,61 @@ namespace Azure.Api.Extensions
 
         private static async Task SeedData(AzureDbContext context, IWebHostEnvironment? env)
         {
-            if(context.Coffes.Any() )
+            if (context.Coffes.Any())
             {
                 return; // Data already seeded
             }
-            var rootPath = env?.ContentRootPath ??throw new Exception("El environment no se cargo");
+            var rootPath = env?.ContentRootPath ?? throw new Exception("El environment no se cargo");
             var fullPathCoffe = Path.Combine(rootPath, "Resources/coffe.json");
             var data = await File.ReadAllTextAsync(fullPathCoffe);
-            var coffees = JsonConvert.DeserializeObject<List<CoffeJson>>(data)??Enumerable.Empty<CoffeJson>();
+            var coffes = JsonConvert.DeserializeObject<List<CoffeJson>>(data) ?? Enumerable.Empty<CoffeJson>();
 
-          var coffesEntities=  coffees.Select(json => new Coffe
+            var ingredientesMaster = new List<Ingredient>();
+            var coffeMaster = new List<Coffe>();
+            var random = new Random();
+
+            foreach (var coffeJson in coffes)
             {
-                Id = json.CoffeId,
-                Name = json.Title!,
-                Description = json.Description,
-                Price = 10,
-               Imagen=json.Image
-            }).ToArray();
+                var ingredientesLocal = new List<Ingredient>();
 
-            await context.Coffes.AddRangeAsync(coffesEntities);
+                foreach (var ingredientName in coffeJson.Ingredientes)
+                {
+                    var ingredient = ingredientesMaster.Where(s => s.Name.Equals(ingredientName)).FirstOrDefault();
+
+                    if (ingredient is null)
+                    {
+                        ingredient = new Ingredient
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = ingredientName
+                        };
+                        ingredientesMaster.Add(ingredient);
+                    }
+                    ingredientesLocal.Add(ingredient);
+                }
+                var coffe = new Coffe
+                {
+                    Id = coffeJson.CoffeId,
+                    Name = coffeJson.Title!,
+                    Description = coffeJson.Description,
+                    CategoryId = coffeJson.Category,
+                    Imagen = coffeJson.Image,
+                    Price = RandomPrice(random, 2, 15),
+                    Ingredients = ingredientesLocal
+                };    
+                
+                coffeMaster.Add(coffe);
+            }
+
+
+
+            await context.Coffes.AddRangeAsync(coffeMaster);
             await context.SaveChangesAsync();
+        }
+
+        private static decimal RandomPrice(Random random, double min, double max)
+        {
+            return (decimal)Math.Round(random.NextDouble() * Math.Abs(max - min) + min, 2);
         }
     }
 }
