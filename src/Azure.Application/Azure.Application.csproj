@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Core.Mappy\Core.Mappy.csproj" />
     <ProjectReference Include="..\..\core\Core.MediatorOR\Core.MediatorOR.csproj" />
     <ProjectReference Include="..\Azure.Persistence\Azure.Persistence.csproj" />
   </ItemGroup>

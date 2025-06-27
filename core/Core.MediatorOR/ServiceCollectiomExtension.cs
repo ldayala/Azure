@@ -1,9 +1,7 @@
-﻿
-
-using Core.MediatorOR.Contracts;
+﻿using Core.MediatorOR.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Scrutor;
+
 
 namespace Core.MediatorOR
 {
@@ -20,6 +18,12 @@ namespace Core.MediatorOR
                 .AddClasses(classes => classes.AssignableTo(typeof(IRequestHandler<,>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
+
+            services.Scan(scan => scan
+               .FromAssemblies(assemblies)
+               .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehaviors<,>)))
+               .AsImplementedInterfaces()
+               .WithTransientLifetime());
             return services;
         }
     }

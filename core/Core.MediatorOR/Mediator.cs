@@ -16,7 +16,7 @@ namespace Core.MediatorOR
 
         public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
-           if (request == null) throw new ArgumentNullException(nameof(request));
+            if (request == null) throw new ArgumentNullException(nameof(request));
             //obtenemos el tipo de handler que maneja la peticion
             var handlerType = typeof(IRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
             dynamic handler = _serviceProvider.GetRequiredService(handlerType);
@@ -25,9 +25,21 @@ namespace Core.MediatorOR
             {
                 throw new InvalidOperationException($"Handler for request type {request.GetType().Name} not found.");
             }
+            //llammos al delegate y los behaviors
+            var behaviorType = typeof(IPipelineBehaviors<,>).MakeGenericType(request.GetType(), typeof(TResponse));
 
+            var behaviors = _serviceProvider.GetServices(behaviorType).Cast<dynamic>().Reverse().ToList();
+
+            RequestHandlerDelegate<TResponse> handlerDelegate = () => handler.Handle((dynamic)request, cancellationToken);
+
+            foreach (var behavior in behaviors)
+            {
+                var next = handlerDelegate;
+                handlerDelegate = () => behavior.Handle((dynamic)request, cancellationToken, next);
+            }
             //llamamos al metodo handle del handler que maneja la peticion
-            return await handler.Handle((dynamic)request, cancellationToken).ConfigureAwait(false);
+            // return await handler.Handle((dynamic)request, cancellationToken).ConfigureAwait(false);
+            return await handlerDelegate();
         }
     }
 }

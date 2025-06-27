@@ -1,4 +1,4 @@
-﻿using Azure.Domain;
+﻿
 using Azure.Persistence;
 using Core.MediatorOR.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -9,24 +9,28 @@ using static Azure.Application.Categories.Queries.CategoryListGet;
 
 namespace Azure.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly AzureDbContext _context;
+     
         private readonly IMediator _mediator;
+      
 
         public CategoryController(AzureDbContext context, IMediator mediator)
         {
-            _context = context;
+           
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<List<Category>> Get(CancellationToken cancellationToken)
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var query = new Query();
-           return await _mediator.Send(query,cancellationToken);
+            
+           var result= await _mediator.Send(query,cancellationToken);
+
+            return Ok(result);
 
         }
 

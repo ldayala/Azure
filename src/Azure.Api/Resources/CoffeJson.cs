@@ -7,6 +7,6 @@
         public string? Description { get; set; } = string.Empty;
         public string? Image { get; set; } = string.Empty;
         public int Category { get; set; } 
-        public string[] Ingredientes { get; set; } =[];
+        public string[] Ingredients { get; set; } =[];
     }
 }

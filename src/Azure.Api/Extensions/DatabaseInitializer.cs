@@ -54,7 +54,7 @@ namespace Azure.Api.Extensions
             {
                 var ingredientesLocal = new List<Ingredient>();
 
-                foreach (var ingredientName in coffeJson.Ingredientes)
+                foreach (var ingredientName in coffeJson.Ingredients)
                 {
                     var ingredient = ingredientesMaster.Where(s => s.Name.Equals(ingredientName)).FirstOrDefault();
 
@@ -68,25 +68,26 @@ namespace Azure.Api.Extensions
                         ingredientesMaster.Add(ingredient);
                     }
                     ingredientesLocal.Add(ingredient);
+
+                    var coffe = new Coffe
+                    {
+                        Id = coffeJson.CoffeId,
+                        Name = coffeJson.Title!,
+                        Description = coffeJson.Description,
+                        CategoryId = coffeJson.Category,
+                        Imagen = coffeJson.Image,
+                        Price = RandomPrice(random, 2, 15),
+                        Ingredients = ingredientesLocal
+                    };
+
+                    coffeMaster.Add(coffe);
                 }
-                var coffe = new Coffe
-                {
-                    Id = coffeJson.CoffeId,
-                    Name = coffeJson.Title!,
-                    Description = coffeJson.Description,
-                    CategoryId = coffeJson.Category,
-                    Imagen = coffeJson.Image,
-                    Price = RandomPrice(random, 2, 15),
-                    Ingredients = ingredientesLocal
-                };    
-                
-                coffeMaster.Add(coffe);
+
+
+                await context.Ingredients.AddRangeAsync(ingredientesMaster);
+                await context.Coffes.AddRangeAsync(coffeMaster);
+                await context.SaveChangesAsync();
             }
-
-
-
-            await context.Coffes.AddRangeAsync(coffeMaster);
-            await context.SaveChangesAsync();
         }
 
         private static decimal RandomPrice(Random random, double min, double max)
